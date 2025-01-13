@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import styles from "../styles/Screen3Styles";
+import styles from "../../styles/Screen3Styles";
 
 const Screen3 = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../assets/img/frame2.png")}
+        source={require("../../assets/img/frame2.png")}
         style={styles.image}
       />
       <Text style={styles.title}>Avoid Junk Food</Text>

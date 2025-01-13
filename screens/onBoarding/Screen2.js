@@ -1,11 +1,11 @@
 import React from "react";
 import { Text, View, Image, TouchableOpacity } from "react-native";
-import styles from "../styles/Screen2Styles";
+import styles from "../../styles/Screen2Styles";
 
 const Screen2 = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Image source={require("../assets/img/frame.png")} style={styles.image} />
+      <Image source={require("../../assets/img/frame.png")} style={styles.image} />
       <Text style={styles.title}>Never skip breakfast</Text>
       <Text style={styles.description}>
         Kick start your metabolism and help burn calories throughout the day.

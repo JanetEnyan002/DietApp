@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, Image, TouchableOpacity } from "react-native";
-import styles from "../styles/WelcomeScreenStyles";
-import logo from "../assets/img/logo.png"; // Correct local image import
+import styles from "../../styles/WelcomeScreenStyles";
+import logo from "../../assets/img/logo.png"; // Correct local image import
 
 const WelcomeScreen = ({ navigation }) => {
   return (
