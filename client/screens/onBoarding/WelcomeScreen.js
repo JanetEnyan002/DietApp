@@ -6,7 +6,7 @@ import logo from "../../assets/img/logo.png"; // Correct local image import
 const WelcomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to</Text>
+      {/* <Text style={styles.title}>Welcome to</Text> */}
       <View style={styles.iconContainer}>
         <Image
           source={logo} // Use the imported image directly

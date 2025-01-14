@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TextInput } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { Button } from 'react-native-paper';
 import { Feather } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -12,16 +12,17 @@ type RecipeListScreenNavigationProp = StackNavigationProp<RootStackParamList, 'D
 interface RecipeCardProps {
   recipe: Recipe;
   onPress: () => void;
+  onAdd: () => void;
 }
 
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onPress }) => (
-  <View style={styles.recipeCard}>
+const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onPress, onAdd }) => (
+  <TouchableOpacity onPress={onPress} style={styles.recipeCard}>
     <Image source={recipe.imageUrl} style={styles.recipeImage} />
     <Text style={styles.recipeName}>{recipe.name}</Text>
-    <Button mode="outlined" onPress={onPress} style={styles.addButton}>
+    <Button mode="outlined" onPress={(e) => { e.stopPropagation(); onAdd(); }} style={styles.addButton}>
       ADD
     </Button>
-  </View>
+  </TouchableOpacity>
 );
 
 type Props = {
@@ -54,8 +55,23 @@ export default function RecipeListScreen({ navigation }: Props) {
     navigation.navigate('RecipeDetail', { recipe });
   };
 
-  const handleViewPlannedMeals = () => {
-    navigation.navigate('MealPlanner');
+  const handleAddRecipe = async (recipe: Recipe) => {
+    try {
+      const storedPlannedMeals = await AsyncStorage.getItem('plannedMeals');
+      const plannedMeals = storedPlannedMeals ? JSON.parse(storedPlannedMeals) : [];
+      const isDuplicate = plannedMeals.some((meal: Recipe) => meal.id === recipe.id);
+
+      if (isDuplicate) {
+        Alert.alert('Duplication Warning', 'This meal is already in your planned meals.');
+        return;
+      }
+
+      plannedMeals.push(recipe);
+      await AsyncStorage.setItem('plannedMeals', JSON.stringify(plannedMeals));
+      Alert.alert('Success', 'Meal added to your planned meals.');
+    } catch (error) {
+      console.error('Error adding meal to planned meals:', error);
+    }
   };
 
   const filteredRecipes = recipes.filter(recipe =>
@@ -81,6 +97,7 @@ export default function RecipeListScreen({ navigation }: Props) {
               <RecipeCard
                 recipe={recipe}
                 onPress={() => handleRecipePress(recipe)}
+                onAdd={() => handleAddRecipe(recipe)}
               />
             </View>
           ))}
@@ -89,7 +106,7 @@ export default function RecipeListScreen({ navigation }: Props) {
 
       <Button
         mode="contained"
-        onPress={handleViewPlannedMeals}
+        onPress={() => navigation.navigate('MealPlanner')}
         style={styles.viewPlannedMealsButton}
       >
         View Planned Meals

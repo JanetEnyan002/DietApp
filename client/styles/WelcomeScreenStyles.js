@@ -28,11 +28,11 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#28a745",
+    color: "#006400",
     marginBottom: 40,
   },
   button: {
-    backgroundColor: "#28a745",
+    backgroundColor: "#006400",
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 30,

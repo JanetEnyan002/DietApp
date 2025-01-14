@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider as PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import WelcomeScreen from "./screens/onBoarding/WelcomeScreen";
@@ -19,6 +20,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
+    <PaperProvider>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Welcome">
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
@@ -36,5 +38,6 @@ export default function App() {
         <Stack.Screen name="DinnerRecipes" component={DinnerScreen} />
       </Stack.Navigator>
     </NavigationContainer>
+    </PaperProvider>
   );
 }

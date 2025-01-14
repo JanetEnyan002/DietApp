@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Alert, Modal } from 'react-native';
 import { Checkbox, Button, Menu, Divider } from 'react-native-paper';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/RootStackParamList';
@@ -14,10 +14,11 @@ interface Props {
 
 interface MealItemProps {
   recipe: Recipe;
-  onSelect: (id: string) => void;
+  onSelect: (id: string, mealType: string) => void;
   onViewDetails: (recipe: Recipe) => void;
-  onDelete: (id: string) => void;
+  onDelete: (id: string, mealType: string) => void;
   selected: boolean;
+  anySelected: boolean;
 }
 
 interface Recipe {
@@ -27,8 +28,14 @@ interface Recipe {
   mealType: string;
 }
 
-const MealItem: React.FC<MealItemProps> = ({ recipe, onSelect, onViewDetails, onDelete, selected }) => {
+const MealItem: React.FC<MealItemProps> = ({ recipe, onSelect, onViewDetails, onDelete, selected, anySelected }) => {
   const [menuVisible, setMenuVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+
+  const handleDelete = () => {
+    onDelete(recipe.id, recipe.mealType);
+    setDeleteModalVisible(false);
+  };
 
   return (
     <View style={styles.mealItem}>
@@ -36,11 +43,11 @@ const MealItem: React.FC<MealItemProps> = ({ recipe, onSelect, onViewDetails, on
         status={selected ? "checked" : "unchecked"}
         color="#006400"
         uncheckedColor="#666"
-        onPress={() => onSelect(recipe.id)}
+        onPress={() => onSelect(recipe.id, recipe.mealType)}
       />
       <Image source={recipe.imageUrl} style={styles.mealImage} />
       <Text style={styles.mealName}>{recipe.name}</Text>
-      {!selected && (
+      {!selected && !anySelected && (
         <Menu
           visible={menuVisible}
           onDismiss={() => setMenuVisible(false)}
@@ -50,19 +57,42 @@ const MealItem: React.FC<MealItemProps> = ({ recipe, onSelect, onViewDetails, on
             </TouchableOpacity>
           }
         >
-          <Menu.Item onPress={() => onViewDetails(recipe)} title="View Details" />
-          <Menu.Item onPress={() => onSelect(recipe.id)} title="Select" />
+          <Menu.Item onPress={() => { setMenuVisible(false); onViewDetails(recipe); }} title="View Details" />
+          <Menu.Item onPress={() => { setMenuVisible(false); onSelect(recipe.id, recipe.mealType); }} title="Select" />
           <Divider />
-          <Menu.Item onPress={() => onDelete(recipe.id)} title="Delete" />
+          <Menu.Item onPress={() => { setMenuVisible(false); setDeleteModalVisible(true); }} title="Delete" />
         </Menu>
       )}
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={deleteModalVisible}
+        onRequestClose={() => setDeleteModalVisible(false)}
+      >
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPressOut={() => setDeleteModalVisible(false)}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Confirm Deletion</Text>
+            <Text style={styles.modalMessage}>Are you sure you want to delete this meal?</Text>
+            <View style={styles.modalButtonContainer}>
+              <Button mode="contained" onPress={handleDelete} style={styles.modalButton} labelStyle={styles.modalButtonLabel}>
+                Delete
+              </Button>
+              <Button mode="outlined" onPress={() => setDeleteModalVisible(false)} style={styles.modalButton2} labelStyle={styles.modalButtonLabel2}>
+                Cancel
+              </Button>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 };
 
 export default function MealPlannerScreen({ navigation }: Props) {
   const [plannedMeals, setPlannedMeals] = useState<Recipe[]>([]);
-  const [selectedMeals, setSelectedMeals] = useState<string[]>([]);
+  const [selectedMeals, setSelectedMeals] = useState<{ id: string, mealType: string }[]>([]);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchPlannedMeals = async () => {
@@ -79,9 +109,11 @@ export default function MealPlannerScreen({ navigation }: Props) {
     fetchPlannedMeals();
   }, []);
 
-  const handleSelectMeal = (id: string) => {
+  const handleSelectMeal = (id: string, mealType: string) => {
     setSelectedMeals(prev =>
-      prev.includes(id) ? prev.filter(mealId => mealId !== id) : [...prev, id]
+      prev.some(meal => meal.id === id && meal.mealType === mealType)
+        ? prev.filter(meal => !(meal.id === id && meal.mealType === mealType))
+        : [...prev, { id, mealType }]
     );
   };
 
@@ -89,17 +121,18 @@ export default function MealPlannerScreen({ navigation }: Props) {
     navigation.navigate('RecipeDetail', { recipe });
   };
 
-  const handleDeleteMeal = async (id: string) => {
-    const updatedMeals = plannedMeals.filter(meal => meal.id !== id);
+  const handleDeleteMeal = async (id: string, mealType: string) => {
+    const updatedMeals = plannedMeals.filter(meal => !(meal.id === id && meal.mealType === mealType));
     setPlannedMeals(updatedMeals);
     await AsyncStorage.setItem('plannedMeals', JSON.stringify(updatedMeals));
   };
 
-  const handleDeleteSelectedMeals = async () => {
-    const updatedMeals = plannedMeals.filter(meal => !selectedMeals.includes(meal.id));
+  const confirmDeleteMeal = async () => {
+    const updatedMeals = plannedMeals.filter(meal => !selectedMeals.some(selected => selected.id === meal.id && selected.mealType === meal.mealType));
     setPlannedMeals(updatedMeals);
     setSelectedMeals([]);
     await AsyncStorage.setItem('plannedMeals', JSON.stringify(updatedMeals));
+    setDeleteModalVisible(false);
   };
 
   const groupedMeals = plannedMeals.reduce((acc, meal) => {
@@ -110,12 +143,14 @@ export default function MealPlannerScreen({ navigation }: Props) {
     return acc;
   }, {} as Record<string, Recipe[]>);
 
+  const anySelected = selectedMeals.length > 0;
+
   return (
     <View style={styles.container}>
-      {selectedMeals.length > 0 && (
+      {anySelected && (
         <Button
           mode="contained"
-          onPress={handleDeleteSelectedMeals}
+          onPress={() => setDeleteModalVisible(true)}
           style={styles.deleteButton}
         >
           Delete Selected
@@ -128,17 +163,40 @@ export default function MealPlannerScreen({ navigation }: Props) {
             <Text style={styles.mealTypeTitle}>{mealType.charAt(0).toUpperCase() + mealType.slice(1)}</Text>
             {meals.map((recipe) => (
               <MealItem
-                key={recipe.id}
+                key={`${recipe.id}-${recipe.mealType}`}
                 recipe={recipe}
                 onSelect={handleSelectMeal}
                 onViewDetails={handleViewDetails}
                 onDelete={handleDeleteMeal}
-                selected={selectedMeals.includes(recipe.id)}
+                selected={selectedMeals.some(meal => meal.id === recipe.id && meal.mealType === recipe.mealType)}
+                anySelected={anySelected}
               />
             ))}
           </View>
         ))}
       </ScrollView>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={deleteModalVisible}
+        onRequestClose={() => setDeleteModalVisible(false)}
+      >
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPressOut={() => setDeleteModalVisible(false)}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Confirm Deletion</Text>
+            <Text style={styles.modalMessage}>Are you sure you want to delete the selected meals?</Text>
+            <View style={styles.modalButtonContainer}>
+              <Button mode="contained" onPress={confirmDeleteMeal} style={styles.modalButton} labelStyle={styles.modalButtonLabel}>
+                Delete
+              </Button>
+              <Button mode="outlined" onPress={() => setDeleteModalVisible(false)} style={styles.modalButton2} labelStyle={styles.modalButtonLabel2}>
+                Cancel
+              </Button>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
@@ -184,5 +242,52 @@ const styles = StyleSheet.create({
   deleteButton: {
     backgroundColor: '#006400',
     marginBottom: 16,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: '90%',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 16,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: 16,
+  },
+  modalMessage: {
+    fontSize: 16,
+    color: '#000',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  modalButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  modalButton: {
+    flex: 1,
+    marginHorizontal: 8,
+    backgroundColor: '#006400',
+  },
+  modalButton2: {
+    flex: 1,
+    marginHorizontal: 8,
+    backgroundColor: 'white',
+  },
+  modalButtonLabel: {
+    color: '#fff', // White text color
+    fontSize: 14,
+  },
+  modalButtonLabel2: {
+    color: '#006400', // Green text color
+    fontSize: 14,
   },
 });

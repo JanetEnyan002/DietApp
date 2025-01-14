@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, Pressable, Modal, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, Pressable, Modal, Alert, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-paper';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -17,10 +17,7 @@ type Props = {
 
 const IngredientItem = ({ name, imageUrl }: { name: string, imageUrl: number }) => (
   <View style={styles.ingredientItem}>
-    <Image 
-      source={imageUrl}
-      style={styles.ingredientIcon} 
-    />
+    <Image source={imageUrl} style={styles.ingredientIcon} />
     <Text style={styles.ingredientText}>{name}</Text>
   </View>
 );
@@ -28,12 +25,13 @@ const IngredientItem = ({ name, imageUrl }: { name: string, imageUrl: number }) 
 const RecipeDetailScreen: React.FC<Props> = ({ route, navigation }) => {
   const { recipe } = route.params;
   const [modalVisible, setModalVisible] = useState(false);
+  const [nutritionModalVisible, setNutritionModalVisible] = useState(false);
 
   const handlePlanMeal = async () => {
     try {
       const storedPlannedMeals = await AsyncStorage.getItem('plannedMeals');
       const plannedMeals = storedPlannedMeals ? JSON.parse(storedPlannedMeals) : [];
-      const isDuplicate = plannedMeals.some((meal: Recipe) => meal.id === recipe.id);
+      const isDuplicate = plannedMeals.some((meal: Recipe) => meal.id === recipe.id && meal.mealType === recipe.mealType);
 
       if (isDuplicate) {
         Alert.alert('Duplication Warning', 'This meal is already in your planned meals.');
@@ -50,37 +48,21 @@ const RecipeDetailScreen: React.FC<Props> = ({ route, navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Pressable 
-        onPress={() => navigation.goBack()} 
-        style={styles.backButton}
-      >
+      <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
         <ArrowLeft size={24} color="#006400" />
       </Pressable>
 
       <View style={styles.imageContainer}>
-        <Image
-          source={recipe.imageUrl}
-          style={styles.image}
-        />
+        <Image source={recipe.imageUrl} style={styles.image} />
       </View>
 
       <Text style={styles.title}>{recipe.name}</Text>
 
       <View style={styles.buttonContainer}>
-        <Button
-          mode="outlined"
-          onPress={() => {}}
-          style={styles.actionButton}
-          labelStyle={styles.actionButtonLabel}
-        >
+        <Button mode="outlined" onPress={() => setNutritionModalVisible(true)} style={styles.actionButton} labelStyle={styles.actionButtonLabel}>
           Nutrition Info
         </Button>
-        <Button
-          mode="outlined"
-          onPress={handlePlanMeal}
-          style={styles.actionButton}
-          labelStyle={styles.actionButtonLabel}
-        >
+        <Button mode="outlined" onPress={handlePlanMeal} style={styles.actionButton} labelStyle={styles.actionButtonLabel}>
           Plan Meal
         </Button>
       </View>
@@ -88,14 +70,12 @@ const RecipeDetailScreen: React.FC<Props> = ({ route, navigation }) => {
       <View style={styles.ingredientsSection}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Ingredients</Text>
-          <Text style={styles.viewMore} onPress={() => setModalVisible(true)}>View more</Text>
+          <Text style={styles.viewMore} onPress={() => setModalVisible(true)}>
+            View more
+          </Text>
         </View>
         {recipe.ingredients.map((ingredient, index) => (
-          <IngredientItem 
-            key={index} 
-            name={ingredient.name} 
-            imageUrl={ingredient.imageUrl} 
-          />
+          <IngredientItem key={index} name={ingredient.name} imageUrl={ingredient.imageUrl} />
         ))}
       </View>
 
@@ -105,7 +85,7 @@ const RecipeDetailScreen: React.FC<Props> = ({ route, navigation }) => {
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <View style={styles.modalOverlay}>
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPressOut={() => setModalVisible(false)}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Preparation Steps</Text>
             <ScrollView style={styles.stepsContainer}>
@@ -117,23 +97,39 @@ const RecipeDetailScreen: React.FC<Props> = ({ route, navigation }) => {
               ))}
             </ScrollView>
             <View style={styles.modalButtonContainer}>
-              <Button
-                mode="contained"
-                onPress={handlePlanMeal}
-                style={styles.modalButton}
-              >
+              <Button mode="contained" onPress={handlePlanMeal} style={styles.modalButton} labelStyle={styles.modalButtonLabel}>
                 Plan Meal
               </Button>
-              <Button
-                mode="outlined"
-                onPress={() => setModalVisible(false)}
-                style={styles.modalButton}
-              >
+              <Button mode="outlined" onPress={() => setModalVisible(false)} style={styles.modalButton2} labelStyle={styles.modalButtonLabel2}>
                 Done
               </Button>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
+      </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={nutritionModalVisible}
+        onRequestClose={() => setNutritionModalVisible(false)}
+      >
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPressOut={() => setNutritionModalVisible(false)}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Nutrition Information</Text>
+            <View style={styles.nutritionContainer}>
+              <Text style={styles.nutritionText}>Calories: {recipe.nutrition.calories} kcal</Text>
+              <Text style={styles.nutritionText}>Protein: {recipe.nutrition.protein} g</Text>
+              <Text style={styles.nutritionText}>Fat: {recipe.nutrition.fat} g</Text>
+              <Text style={styles.nutritionText}>Carbohydrates: {recipe.nutrition.carbohydrates} g</Text>
+              {recipe.nutrition.fiber && <Text style={styles.nutritionText}>Fiber: {recipe.nutrition.fiber} g</Text>}
+              {recipe.nutrition.sugar && <Text style={styles.nutritionText}>Sugar: {recipe.nutrition.sugar} g</Text>}
+            </View>
+            <Button mode="outlined" onPress={() => setNutritionModalVisible(false)} style={styles.modalButton2} labelStyle={styles.modalButtonLabel2}>
+              Close
+            </Button>
+          </View>
+        </TouchableOpacity>
       </Modal>
     </ScrollView>
   );
@@ -261,6 +257,28 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 8,
     backgroundColor: '#006400',
+  },
+  modalButton2: {
+    flex: 1,
+    marginHorizontal: 8,
+    backgroundColor: 'white',
+  },
+  modalButtonLabel: {
+    color: '#fff', // White text color
+    fontSize: 14,
+  },
+  modalButtonLabel2: {
+    color: '#006400', // Green text color
+    fontSize: 14,
+  },
+  nutritionContainer: {
+    width: '100%',
+    marginBottom: 16,
+  },
+  nutritionText: {
+    fontSize: 16,
+    color: '#000',
+    marginBottom: 8,
   },
 });
 

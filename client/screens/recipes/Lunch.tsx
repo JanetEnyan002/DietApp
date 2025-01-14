@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TextInput } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TextInput, Alert, Pressable } from 'react-native';
 import { Button } from 'react-native-paper';
 import { Feather } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -12,23 +12,29 @@ type LunchScreenNavigationProp = StackNavigationProp<RootStackParamList, 'LunchR
 interface RecipeCardProps {
   recipe: Recipe;
   onPress: () => void;
+  onAddPress: () => void;
 }
 
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onPress }) => {
-  return (
-    <View style={styles.recipeCard}>
-      <Image 
-        source={recipe.imageUrl} // Use the imageUrl directly since it's already required
-        style={styles.recipeImage} 
-        resizeMode="cover"
-      />
-      <Text style={styles.recipeName}>{recipe.name}</Text>
-      <Button mode="outlined" onPress={onPress} style={styles.addButton}>
-        ADD
-      </Button>
-    </View>
-  );
-};
+const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onPress, onAddPress }) => (
+  <Pressable onPress={onPress} style={styles.recipeCard}>
+    <Image 
+      source={recipe.imageUrl} 
+      style={styles.recipeImage}
+      resizeMode="cover"
+    />
+    <Text style={styles.recipeName}>{recipe.name}</Text>
+    <Button 
+      mode="outlined" 
+      onPress={(e) => {
+        e.stopPropagation(); // Prevent triggering the card's onPress
+        onAddPress();
+      }} 
+      style={styles.addButton}
+    >
+      ADD
+    </Button>
+  </Pressable>
+);
 
 type Props = {
   navigation: LunchScreenNavigationProp;
@@ -41,15 +47,12 @@ export default function LunchScreen({ navigation }: Props) {
   useEffect(() => {
     const loadRecipes = async () => {
       try {
-        // Use lunchRecipes directly from mealData
         setRecipes(lunchRecipes);
-        // Store the recipes in AsyncStorage if needed
         await AsyncStorage.setItem('lunchRecipes', JSON.stringify(lunchRecipes));
       } catch (error) {
         console.error('Error loading recipes:', error);
       }
     };
-
     loadRecipes();
   }, []);
 
@@ -59,6 +62,26 @@ export default function LunchScreen({ navigation }: Props) {
 
   const handleViewPlannedMeals = () => {
     navigation.navigate('MealPlanner');
+  };
+
+  const handleAddRecipe = async (recipe: Recipe) => {
+    try {
+      const storedPlannedMeals = await AsyncStorage.getItem('plannedMeals');
+      const plannedMeals = storedPlannedMeals ? JSON.parse(storedPlannedMeals) : [];
+      const isDuplicate = plannedMeals.some((meal: Recipe) => meal.id === recipe.id && meal.mealType === recipe.mealType);
+    
+      if (isDuplicate) {
+        Alert.alert('Duplication Warning', 'This meal is already in your planned meals.');
+        return;
+      }
+    
+      plannedMeals.push(recipe);
+      await AsyncStorage.setItem('plannedMeals', JSON.stringify(plannedMeals));
+      Alert.alert('Success', 'Meal added to your planned meals.');
+    } catch (error) {
+      console.error('Error adding meal to planned meals:', error);
+      Alert.alert('Error', 'Failed to add meal to planned meals.');
+    }
   };
 
   const filteredRecipes = recipes.filter(recipe =>
@@ -76,18 +99,17 @@ export default function LunchScreen({ navigation }: Props) {
           onChangeText={setSearchQuery}
         />
       </View>
-
       <ScrollView contentContainerStyle={styles.recipesContainer}>
         {filteredRecipes.map((recipe) => (
           <View key={recipe.id} style={styles.recipeWrapper}>
             <RecipeCard
               recipe={recipe}
               onPress={() => handleRecipePress(recipe)}
+              onAddPress={() => handleAddRecipe(recipe)}
             />
           </View>
         ))}
       </ScrollView>
-
       <Button
         mode="contained"
         onPress={handleViewPlannedMeals}
