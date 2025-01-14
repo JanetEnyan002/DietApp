@@ -1,8 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
-import { Checkbox, Button } from 'react-native-paper';
+import { Checkbox } from 'react-native-paper';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/RootStackParamList';
+import one from '../../assets/'
+
+
+
+
 
 type MealPlannerScreenNavigationProp = StackNavigationProp<RootStackParamList, 'MealPlanner'>;
 
@@ -16,37 +21,49 @@ interface MealItemProps {
 
 const MealItem: React.FC<MealItemProps> = ({ image }) => (
   <View style={styles.mealItem}>
-    <Checkbox status="unchecked" />
+    <Checkbox.Android
+      status="unchecked"
+      color="#006400"
+      uncheckedColor="#666"
+    />
     <Image source={{ uri: image }} style={styles.mealImage} />
   </View>
 );
 
 export default function MealPlannerScreen({ navigation }: Props) {
   const meals = {
-    Breakfast: ['/placeholder.svg', '/placeholder.svg'],
-    Snack: ['/placeholder.svg', '/placeholder.svg'],
-    Lunch: ['/placeholder.svg', '/placeholder.svg'],
-    Dinner: ['/placeholder.svg', '/placeholder.svg'],
+    Breakfast: [
+      'https://v0.blob.com/snack1.jpg',
+      'https://v0.blob.com/snack2.jpg'
+    ],
+    Snack: [
+      'https://v0.blob.com/snack1.jpg',
+      'https://v0.blob.com/snack2.jpg'
+    ],
+    Lunch: [
+      'https://v0.blob.com/lunch1.jpg',
+      'https://v0.blob.com/lunch2.jpg'
+    ],
+    Dinner: [
+      'https://v0.blob.com/dinner1.jpg',
+      'https://v0.blob.com/dinner2.jpg'
+    ],
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <Text style={styles.title}>Planner</Text>
+      
       {Object.entries(meals).map(([mealType, images]) => (
         <View key={mealType} style={styles.mealTypeContainer}>
           <Text style={styles.mealTypeTitle}>{mealType}</Text>
-          {images.map((image, index) => (
-            <MealItem key={index} image={image} />
-          ))}
+          <View style={styles.mealItemsContainer}>
+            {images.map((image, index) => (
+              <MealItem key={index} image={image} />
+            ))}
+          </View>
         </View>
       ))}
-      <Button
-        mode="contained"
-        onPress={() => navigation.navigate('RecipeList')}
-        style={styles.button}
-      >
-        Continue
-      </Button>
     </ScrollView>
   );
 }
@@ -54,36 +71,37 @@ export default function MealPlannerScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
     backgroundColor: '#fff',
+    padding: 20,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 24,
+    fontWeight: '600',
+    color: '#000',
+    marginBottom: 32,
   },
   mealTypeContainer: {
-    marginBottom: 24,
+    marginBottom: 32,
   },
   mealTypeTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '600',
+    color: '#000',
     marginBottom: 16,
+  },
+  mealItemsContainer: {
+    gap: 16,
   },
   mealItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    gap: 12,
   },
   mealImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginLeft: 12,
-  },
-  button: {
-    marginTop: 24,
-    marginBottom: 24,
-    backgroundColor: '#006400',
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#F0F0F0',
   },
 });
+
