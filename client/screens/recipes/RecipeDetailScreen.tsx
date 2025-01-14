@@ -1,10 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Image, Pressable, Modal, Alert } from 'react-native';
 import { Button } from 'react-native-paper';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/RootStackParamList';
 import { ArrowLeft } from 'lucide-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type RecipeDetailScreenRouteProp = RouteProp<RootStackParamList, 'RecipeDetail'>;
 type RecipeDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'RecipeDetail'>;
@@ -14,10 +15,10 @@ type Props = {
   navigation: RecipeDetailScreenNavigationProp;
 };
 
-const IngredientItem = ({ name }: { name: string }) => (
+const IngredientItem = ({ name, imageUrl }: { name: string, imageUrl: number }) => (
   <View style={styles.ingredientItem}>
     <Image 
-      source={{ uri: '/placeholder.svg?height=24&width=24' }}
+      source={imageUrl}
       style={styles.ingredientIcon} 
     />
     <Text style={styles.ingredientText}>{name}</Text>
@@ -26,6 +27,26 @@ const IngredientItem = ({ name }: { name: string }) => (
 
 const RecipeDetailScreen: React.FC<Props> = ({ route, navigation }) => {
   const { recipe } = route.params;
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handlePlanMeal = async () => {
+    try {
+      const storedPlannedMeals = await AsyncStorage.getItem('plannedMeals');
+      const plannedMeals = storedPlannedMeals ? JSON.parse(storedPlannedMeals) : [];
+      const isDuplicate = plannedMeals.some((meal: Recipe) => meal.id === recipe.id);
+
+      if (isDuplicate) {
+        Alert.alert('Duplication Warning', 'This meal is already in your planned meals.');
+        return;
+      }
+
+      plannedMeals.push(recipe);
+      await AsyncStorage.setItem('plannedMeals', JSON.stringify(plannedMeals));
+      navigation.navigate('MealPlanner');
+    } catch (error) {
+      console.error('Error saving planned meal:', error);
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -38,7 +59,7 @@ const RecipeDetailScreen: React.FC<Props> = ({ route, navigation }) => {
 
       <View style={styles.imageContainer}>
         <Image
-          source={{ uri: recipe.image || '/placeholder.svg?height=120&width=120' }}
+          source={recipe.imageUrl}
           style={styles.image}
         />
       </View>
@@ -56,24 +77,64 @@ const RecipeDetailScreen: React.FC<Props> = ({ route, navigation }) => {
         </Button>
         <Button
           mode="outlined"
-          onPress={() => {}}
+          onPress={handlePlanMeal}
           style={styles.actionButton}
           labelStyle={styles.actionButtonLabel}
         >
-          Meal Plan
+          Plan Meal
         </Button>
       </View>
 
       <View style={styles.ingredientsSection}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Ingredients</Text>
-          <Text style={styles.viewMore}>View more</Text>
+          <Text style={styles.viewMore} onPress={() => setModalVisible(true)}>View more</Text>
         </View>
-
-        {Array(5).fill('Brown Rice').map((ingredient, index) => (
-          <IngredientItem key={index} name={ingredient} />
+        {recipe.ingredients.map((ingredient, index) => (
+          <IngredientItem 
+            key={index} 
+            name={ingredient.name} 
+            imageUrl={ingredient.imageUrl} 
+          />
         ))}
       </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Preparation Steps</Text>
+            <ScrollView style={styles.stepsContainer}>
+              {recipe.steps?.map((step, index) => (
+                <View key={index} style={styles.stepItem}>
+                  <Text style={styles.stepOrder}>Step {step.order}</Text>
+                  <Text style={styles.stepDescription}>{step.description}</Text>
+                </View>
+              ))}
+            </ScrollView>
+            <View style={styles.modalButtonContainer}>
+              <Button
+                mode="contained"
+                onPress={handlePlanMeal}
+                style={styles.modalButton}
+              >
+                Plan Meal
+              </Button>
+              <Button
+                mode="outlined"
+                onPress={() => setModalVisible(false)}
+                style={styles.modalButton}
+              >
+                Done
+              </Button>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 };
@@ -157,7 +218,50 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000',
   },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: '90%',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 16,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: 16,
+  },
+  stepsContainer: {
+    width: '100%',
+    marginBottom: 16,
+  },
+  stepItem: {
+    marginBottom: 16,
+  },
+  stepOrder: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  stepDescription: {
+    fontSize: 16,
+    color: '#666',
+  },
+  modalButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  modalButton: {
+    flex: 1,
+    marginHorizontal: 8,
+    backgroundColor: '#006400',
+  },
 });
 
 export default RecipeDetailScreen;
-

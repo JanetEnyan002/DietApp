@@ -4,50 +4,53 @@ import { Button } from 'react-native-paper';
 import { Feather } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/RootStackParamList';
-import { dinnerRecipes, Recipe } from '../../data/mealData';
+import { lunchRecipes, Recipe } from '../../data/mealData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type RecipeListScreenNavigationProp = StackNavigationProp<RootStackParamList, 'DinnerRecipes'>;
+type LunchScreenNavigationProp = StackNavigationProp<RootStackParamList, 'LunchRecipes'>;
 
 interface RecipeCardProps {
   recipe: Recipe;
   onPress: () => void;
 }
 
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onPress }) => (
-  <View style={styles.recipeCard}>
-    <Image source={recipe.imageUrl} style={styles.recipeImage} />
-    <Text style={styles.recipeName}>{recipe.name}</Text>
-    <Button mode="outlined" onPress={onPress} style={styles.addButton}>
-      ADD
-    </Button>
-  </View>
-);
-
-type Props = {
-  navigation: RecipeListScreenNavigationProp;
+const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onPress }) => {
+  return (
+    <View style={styles.recipeCard}>
+      <Image 
+        source={recipe.imageUrl} // Use the imageUrl directly since it's already required
+        style={styles.recipeImage} 
+        resizeMode="cover"
+      />
+      <Text style={styles.recipeName}>{recipe.name}</Text>
+      <Button mode="outlined" onPress={onPress} style={styles.addButton}>
+        ADD
+      </Button>
+    </View>
+  );
 };
 
-export default function RecipeListScreen({ navigation }: Props) {
+type Props = {
+  navigation: LunchScreenNavigationProp;
+};
+
+export default function LunchScreen({ navigation }: Props) {
   const [searchQuery, setSearchQuery] = useState('');
   const [recipes, setRecipes] = useState<Recipe[]>([]);
 
   useEffect(() => {
-    const fetchRecipes = async () => {
+    const loadRecipes = async () => {
       try {
-        const storedRecipes = await AsyncStorage.getItem('recipes');
-        if (storedRecipes) {
-          setRecipes(JSON.parse(storedRecipes).filter((recipe: Recipe) => recipe.mealType === 'dinner'));
-        } else {
-          setRecipes(dinnerRecipes);
-          await AsyncStorage.setItem('recipes', JSON.stringify(dinnerRecipes));
-        }
+        // Use lunchRecipes directly from mealData
+        setRecipes(lunchRecipes);
+        // Store the recipes in AsyncStorage if needed
+        await AsyncStorage.setItem('lunchRecipes', JSON.stringify(lunchRecipes));
       } catch (error) {
-        console.error('Error fetching recipes:', error);
+        console.error('Error loading recipes:', error);
       }
     };
 
-    fetchRecipes();
+    loadRecipes();
   }, []);
 
   const handleRecipePress = (recipe: Recipe) => {
@@ -75,16 +78,14 @@ export default function RecipeListScreen({ navigation }: Props) {
       </View>
 
       <ScrollView contentContainerStyle={styles.recipesContainer}>
-        <View style={styles.recipeRow}>
-          {filteredRecipes.map((recipe) => (
-            <View key={recipe.id} style={styles.recipeWrapper}>
-              <RecipeCard
-                recipe={recipe}
-                onPress={() => handleRecipePress(recipe)}
-              />
-            </View>
-          ))}
-        </View>
+        {filteredRecipes.map((recipe) => (
+          <View key={recipe.id} style={styles.recipeWrapper}>
+            <RecipeCard
+              recipe={recipe}
+              onPress={() => handleRecipePress(recipe)}
+            />
+          </View>
+        ))}
       </ScrollView>
 
       <Button
@@ -121,17 +122,12 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
-  recipeRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
   recipeWrapper: {
     width: '48%',
     marginBottom: 16,
   },
   recipeCard: {
-    backgroundColor: '#006400',
+    backgroundColor: '#e0f7e0',
     borderRadius: 8,
     padding: 16,
     elevation: 2,
@@ -150,16 +146,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
-    color: '#fff',
+    color: '#006400',
   },
   addButton: {
     marginTop: 8,
-    borderColor: '#fff',
-    color: '#fff',
+    borderColor: '#006400',
+    color: '#006400',
   },
   viewPlannedMealsButton: {
     margin: 16,
     backgroundColor: '#006400',
-    color: '#fff',
   },
 });

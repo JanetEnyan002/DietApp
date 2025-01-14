@@ -10,6 +10,10 @@ import RecipeDetailScreen from "./screens/recipes/RecipeDetailScreen";
 import MealPlannerScreen from "./screens/meal-plan/MealPlannerScreen";
 import MealPlanScreen from "./screens/meal-plan/MealPlanScreen";
 import HealthPreferencesScreen from "./screens/health/HealthPreferencesScreen";
+import BreakfastScreen from "./screens/recipes/Breakfast";
+import LunchScreen from "./screens/recipes/Lunch";
+import SnackScreen from "./screens/recipes/Snack";
+import DinnerScreen from "./screens/recipes/Dinner";
 
 const Stack = createStackNavigator();
 
@@ -26,6 +30,10 @@ export default function App() {
         <Stack.Screen name="MealPlanner" component={MealPlannerScreen} />
         <Stack.Screen name="MealPlan" component={MealPlanScreen} />
         <Stack.Screen name="HealthPreferences" component={HealthPreferencesScreen} />
+        <Stack.Screen name="BreakfastRecipes" component={BreakfastScreen} />
+        <Stack.Screen name="LunchRecipes" component={LunchScreen} />
+        <Stack.Screen name="SnackRecipes" component={SnackScreen} />
+        <Stack.Screen name="DinnerRecipes" component={DinnerScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

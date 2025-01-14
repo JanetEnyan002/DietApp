@@ -40,6 +40,26 @@ export default function MealPlanScreen({ navigation }: Props) {
     </TouchableOpacity>
   );
 
+  const handleContinue = () => {
+    switch (mealType) {
+      case 'breakfast':
+        navigation.navigate('BreakfastRecipes');
+        break;
+      case 'lunch':
+        navigation.navigate('LunchRecipes');
+        break;
+      case 'snack':
+        navigation.navigate('SnackRecipes');
+        break;
+      case 'dinner':
+        navigation.navigate('DinnerRecipes');
+        break;
+      default:
+        navigation.navigate('RecipeList');
+        break;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Meal Plan</Text>
@@ -94,7 +114,7 @@ export default function MealPlanScreen({ navigation }: Props) {
 
       <Button
         mode="contained"
-        onPress={() => navigation.navigate('MealPlanner')}
+        onPress={handleContinue}
         style={styles.button}
         contentStyle={styles.buttonContent}
       >

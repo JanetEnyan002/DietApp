@@ -8,4 +8,8 @@ export type RootStackParamList = {
 	MealPlanner: undefined;
 	MealPlan: undefined;
 	HealthPreferences: undefined;
+	BreakfastRecipes: undefined;
+	LunchRecipes: undefined;
+	SnackRecipes: undefined;
+	DinnerRecipes: undefined;
       };
