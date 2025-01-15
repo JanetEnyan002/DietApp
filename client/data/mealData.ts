@@ -80,10 +80,19 @@ const oats = require('../assets/ingredients/oats.jpg')
 const yeast = require('../assets/ingredients/yeast.jpg')
 const lemon = require('../assets/ingredients/lemon.jpg')
 const dill = require('../assets/ingredients/dill.jpg')
-const oliveOli = require('../assets/ingredients/oliveoil.jpg')
-const basilOli = require('../assets/ingredients/basil.jpg')
-
-
+const olive = require('../assets/ingredients/oliveoil.jpg')
+const basil = require('../assets/ingredients/basil.jpg')
+const carrot = require('../assets/ingredients/carrots.jpg')
+const celery = require('../assets/ingredients/celery.jpg')
+const broth = require('../assets/ingredients/broth.jpg')
+const paprika = require('../assets/ingredients/paprika.jpg')
+const potatoes = require('../assets/ingredients/potatoes.jpg')
+const apples = require('../assets/ingredients/apples.jpg')
+const grapes = require('../assets/ingredients/grapes.jpg')
+const oranges = require('../assets/ingredients/oranges.jpg')
+const nuts = require('../assets/ingredients/nuts.jpg')
+const driedfruit = require('../assets/ingredients/driedfruit.jpg')
+const chipps = require('../assets/ingredients/chips.jpg')
 
 
 
@@ -291,7 +300,7 @@ const basilOli = require('../assets/ingredients/basil.jpg')
 	  { name: 'Lemon', imageUrl: lemon },
 	  { name: 'Dill', imageUrl: dill },
 	  { name: 'Garlic', imageUrl: garlic},
-	  { name: 'Olive Oil', imageUrl: oliveOli},
+	  { name: 'Olive Oil', imageUrl: olive},
 	], steps: [
 	  { order: 1, description: 'Season the **Salmon** with **Salt** and **Pepper**.' },
 	  { order: 2, description: 'Heat a pan and cook the salmon skin-side down.' },
@@ -309,9 +318,9 @@ const basilOli = require('../assets/ingredients/basil.jpg')
 	{ id: '11', name: 'Pasta', imageUrl: pasta, mealType: 'dinner', ingredients: [
 	  { name: 'Pasta', imageUrl: pasta },
 	  { name: 'Tomato Sauce', imageUrl: paste },
-	  { name: 'Basil', imageUrl: basilOli },
-	  { name: 'Parmesan', imageUrl: pramesan },
-	  { name: 'Olive Oil', imageUrl: oliveOil },
+	  { name: 'Basil', imageUrl: basil },
+	  { name: 'Parmesan', imageUrl: parmesan },
+	  { name: 'Olive Oil', imageUrl: olive },
 	], steps: [
 	  { order: 1, description: 'Cook the **Pasta** according to package instructions.' },
 	  { order: 2, description: 'In a pan, heat the **Tomato Sauce**.' },
@@ -328,10 +337,10 @@ const basilOli = require('../assets/ingredients/basil.jpg')
 	}},
 	{ id: '12', name: 'Soup', imageUrl: soup, mealType: 'dinner', ingredients: [
 	  { name: 'Chicken', imageUrl: chicken },
-	  { name: 'Carrots', imageUrl: Parmesan },
-	  { name: 'Celery', imageUrl: ingredientImage },
-	  { name: 'Onions', imageUrl: ingredientImage },
-	  { name: 'Broth', imageUrl: ingredientImage },
+	  { name: 'Carrots', imageUrl: carrot },
+	  { name: 'Celery', imageUrl: celery },
+	  { name: 'Onions', imageUrl: onion },
+	  { name: 'Broth', imageUrl: broth },
 	], steps: [
 	  { order: 1, description: 'Cook the **Chicken** and set aside.' },
 	  { order: 2, description: 'In a pot, sauté **Onions**, **Carrots**, and **Celery**.' },
@@ -349,12 +358,12 @@ const basilOli = require('../assets/ingredients/basil.jpg')
       ];
       
       export const snackRecipes: Recipe[] = [
-	{ id: '13', name: 'Chips', imageUrl: chips, mealType: 'snack', ingredients: [
-	  { name: 'Potatoes', imageUrl: ingredientImage },
-	  { name: 'Salt', imageUrl: ingredientImage },
-	  { name: 'Oil', imageUrl: ingredientImage },
-	  { name: 'Pepper', imageUrl: ingredientImage },
-	  { name: 'Paprika', imageUrl: ingredientImage },
+	{ id: '13', name: 'Chips', imageUrl: chipps, mealType: 'snack', ingredients: [
+	  { name: 'Potatoes', imageUrl: potatoes },
+	  { name: 'Salt', imageUrl: salt },
+	  { name: 'Oil', imageUrl: olive },
+	  { name: 'Pepper', imageUrl: pepper },
+	  { name: 'Paprika', imageUrl: paprika },
 	], steps: [
 	  { order: 1, description: 'Slice the **Potatoes** thinly.' },
 	  { order: 2, description: 'Heat the **Oil** in a pan.' },
@@ -370,11 +379,11 @@ const basilOli = require('../assets/ingredients/basil.jpg')
 	  sugar: 2,
 	}},
 	{ id: '14', name: 'Fruit Salad', imageUrl:salad, mealType: 'snack', ingredients: [
-	  { name: 'Apples', imageUrl: ingredientImage },
-	  { name: 'Bananas', imageUrl: ingredientImage },
-	  { name: 'Grapes', imageUrl: ingredientImage },
-	  { name: 'Oranges', imageUrl: ingredientImage },
-	  { name: 'Berries', imageUrl: ingredientImage },
+	  { name: 'Apples', imageUrl: apples },
+	  { name: 'Bananas', imageUrl: banana },
+	  { name: 'Grapes', imageUrl: grapes },
+	  { name: 'Oranges', imageUrl:oranges },
+	  { name: 'Berries', imageUrl: berries },
 	], steps: [
 	  { order: 1, description: 'Chop the **Apples**, **Bananas**, and **Oranges**.' },
 	  { order: 2, description: 'Mix the chopped fruits with **Grapes** and **Berries**.' },
@@ -388,11 +397,11 @@ const basilOli = require('../assets/ingredients/basil.jpg')
 	  sugar: 25,
 	}},
 	{ id: '15', name: 'Yogurt', imageUrl: yogurt, mealType: 'snack', ingredients: [
-	  { name: 'Yogurt', imageUrl: ingredientImage },
-	  { name: 'Honey', imageUrl: ingredientImage },
-	  { name: 'Granola', imageUrl: ingredientImage },
-	  { name: 'Berries', imageUrl: ingredientImage },
-	  { name: 'Nuts', imageUrl: ingredientImage },
+	  { name: 'Yogurt', imageUrl: yogurt },
+	  { name: 'Honey', imageUrl: honey },
+	  { name: 'Granola', imageUrl: granola },
+	  { name: 'Berries', imageUrl: berries },
+	  { name: 'Nuts', imageUrl: nuts },
 	], steps: [
 	  { order: 1, description: 'Add **Yogurt** to a bowl.' },
 	  { order: 2, description: 'Top with **Honey**, **Granola**, **Berries**, and **Nuts**.' },
@@ -406,11 +415,11 @@ const basilOli = require('../assets/ingredients/basil.jpg')
 	  sugar: 20,
 	}},
 	{ id: '16', name: 'Granola Bar', imageUrl: granola, mealType: 'snack', ingredients: [
-	  { name: 'Oats', imageUrl: ingredientImage },
-	  { name: 'Honey', imageUrl: ingredientImage },
-	  { name: 'Nuts', imageUrl: ingredientImage },
-	  { name: 'Dried Fruit', imageUrl: ingredientImage },
-	  { name: 'Dried fruit', imageUrl: ingredientImage },
+	  { name: 'Oats', imageUrl: oats },
+	  { name: 'Honey', imageUrl: honey },
+	  { name: 'Nuts', imageUrl: nuts },
+	  { name: 'Dried Fruit', imageUrl: driedfruit },
+	  { name: 'Dried fruit', imageUrl: driedfruit },
 	  ], steps: [
 		{ order: 1, description: 'Combine **Oats**, **Honey**, and **Nuts** in a bowl.' },
                 { order: 2, description: 'Add dried fruit, such as blueberries, raspberries, or strawberries.' },
@@ -426,27 +435,15 @@ const basilOli = require('../assets/ingredients/basil.jpg')
         sugar: 2,
       }},
       { id: '17', name: 'Smoothie', imageUrl: smoothie, mealType: 'snack', ingredients: [
-	{ name: 'Banana', imageUrl: ingredientImage },
-	{ name: 'Yogurt', imageUrl: ingredientImage },
-	{ name: 'Honey', imageUrl: ingredientImage },
-	{ name: 'Spinach', imageUrl: ingredientImage },
-	{ name: 'Milk', imageUrl: ingredientImage },
-	{ name: 'Ice', imageUrl: ingredientImage },
+	{ name: 'Banana', imageUrl: banana },
+	{ name: 'Yogurt', imageUrl:yogurt },
+	{ name: 'Honey', imageUrl: honey },
+	{ name: 'Milk', imageUrl: milk },
+	{ name: 'Ice', imageUrl: ice },
 	{ name: 'Strawberry', imageUrl: ingredientImage },
-	{ name: 'Blueberry', imageUrl: ingredientImage },
-	{ name: 'Raspberry', imageUrl: ingredientImage },
-	{ name: 'Pineapple', imageUrl: ingredientImage },
-	{ name: 'Grapefruit', imageUrl: ingredientImage },
-	{ name: 'Lemon', imageUrl: ingredientImage },
-	{ name: 'Orange', imageUrl: ingredientImage },
-	{ name: 'Papaya', imageUrl: ingredientImage },
-	{ name: 'Avocado', imageUrl: ingredientImage },
-	{ name: 'Coconut', imageUrl: ingredientImage },
-	{ name: 'Almond milk', imageUrl: ingredientImage },
-	{ name: 'Flour', imageUrl: ingredientImage },
-	{ name: 'Baking powder', imageUrl: ingredientImage },
-	{ name: 'Sugar', imageUrl: ingredientImage },
-	{ name: 'Eggs', imageUrl: ingredientImage },
+		{ name: 'Almond milk', imageUrl: milk},
+	{ name: 'Flour', imageUrl: flour },
+		{ name: 'Eggs', imageUrl: ingredientImage },
       ], steps: [
 	{ order: 1, description: 'Combine **Banana**, **Yogurt**, **Honey**, **Spinach**, **Milk**, and **Ice** in a blender.' },
 	{ order: 2, description: 'Add **Strawberry**, **Blueberry**, **Raspberry**, **Pineapple**, **Grapefruit**, **Lemon**, **Orange**, **Papaya**, **Avocado**, **Coconut**, **Almond milk**, **Flour**, **Baking powder**, **Sugar**, and **Eggs**.' },
