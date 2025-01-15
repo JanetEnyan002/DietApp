@@ -1,25 +1,21 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
-import styles from "../../styles/Screen3Styles";
+import { Text, View, Image, TouchableOpacity } from "react-native";
+import styles from "../../styles/Screen2Styles";
 
 const Screen3 = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Image
-        source={require("../../assets/img/frame2.png")}
-        style={styles.image}
-      />
-      <Text style={styles.title}>Avoid Junk Food</Text>
+      <Image source={require("../../assets/img/frame.png")} style={styles.image} />
+      <Text style={styles.title}>Stay Hydrated</Text>
       <Text style={styles.description}>
-        Fast foods are high in calories and low in nutrients, leading to weight
-        gain.
+        Drinking water is essential for maintaining good health.
       </Text>
-      <View style={styles.navigation}>
+      <View style={styles.footer}>
         <TouchableOpacity onPress={() => navigation.navigate("Breakfast")}>
-          <Text style={styles.link}>Back</Text>
+          <Text style={styles.footerText}>Back</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("OnTime")}>
-          <Text style={styles.link}>Next</Text>
+          <Text style={styles.footerText}>Next</Text>
         </TouchableOpacity>
       </View>
     </View>
