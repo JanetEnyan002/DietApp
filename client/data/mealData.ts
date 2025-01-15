@@ -51,6 +51,43 @@ export interface Ingredient {
       const soup = require('../assets/meals/soup.jpg')
 
 
+      //ingredients 
+      //list ingredients for 
+const  eggs = require('../assets/ingredients/eggs.png')
+const flour =require('../assets/ingredients/flour.jpg')
+const milk = require('../assets/ingredients/milk.jpg')
+const butter = require('../assets/ingredients/butter.jpg')
+const cheese = require('../assets/ingredients/cheese.jpg')
+const sugar = require('../assets/ingredients/sugar.jpg')
+const pepper = require ('../assets/ingredients/peppers.jpg')
+const onion = require('../assets/ingredients/onion.jpg')
+const salt = require('../assets/ingredients/salt.jpg')
+const banana = require('../assets/ingredients/banana.jpg')
+const strawberries = require('../assets/ingredients/strawberries.jpg')
+const honey = require('../assets/ingredients/honey.jpg')
+const ice = require('../assets/ingredients/ice.jpg')
+const bread = require('../assets/ingredients/bread.jpg')
+const jam = require('../assets/ingredients/jam.jpg')
+const peanut = require('../assets/ingredients/peanutButter.jpg')
+const paste = require('../assets/ingredients/paste.jpg')
+const beef = require('../assets/ingredients/beef.jpg')
+const garlic = require('../assets/ingredients/garlic.jpg')
+const parmesan = require('../assets/ingredients/parmesan.jpg')
+const rice = require('../assets/ingredients/rice.jpg')
+const chicken = require('../assets/ingredients/chicken.jpg')
+const berries = require('../assets/ingredients/berries.jpg')
+const oats = require('../assets/ingredients/oats.jpg')
+const yeast = require('../assets/ingredients/yeast.jpg')
+const lemon = require('../assets/ingredients/lemon.jpg')
+const dill = require('../assets/ingredients/dill.jpg')
+const oliveOli = require('../assets/ingredients/oliveoil.jpg')
+const basilOli = require('../assets/ingredients/basil.jpg')
+
+
+
+
+
+
 
 
 
@@ -66,11 +103,11 @@ export interface Ingredient {
       
       export const breakfastRecipes: Recipe[] = [
 	{ id: '1', name: 'Pancakes', imageUrl: pancake, mealType: 'breakfast', ingredients: [
-	  { name: 'Flour', imageUrl: ingredientImage },
-	  { name: 'Eggs', imageUrl: ingredientImage },
-	  { name: 'Milk', imageUrl: ingredientImage },
-	  { name: 'Sugar', imageUrl: ingredientImage },
-	  { name: 'Butter', imageUrl: ingredientImage },
+	  { name: 'Flour', imageUrl: flour },
+	  { name: 'Eggs', imageUrl: eggs },
+	  { name: 'Milk', imageUrl: milk },
+	  { name: 'Sugar', imageUrl: sugar },
+	  { name: 'Butter', imageUrl: butter },
 	], steps: [
 	  { order: 1, description: 'Mix the dry ingredients: **Flour**, **Sugar**.' },
 	  { order: 2, description: 'Add the wet ingredients: **Eggs**, **Milk**, **Butter**.' },
@@ -86,11 +123,11 @@ export interface Ingredient {
 	  sugar: 12,
 	}},
 	{ id: '2', name: 'Omelette', imageUrl: omelette, mealType: 'breakfast', ingredients: [
-	  { name: 'Eggs', imageUrl: ingredientImage },
-	  { name: 'Cheese', imageUrl: ingredientImage },
-	  { name: 'Bell Peppers', imageUrl: ingredientImage },
-	  { name: 'Onions', imageUrl: ingredientImage },
-	  { name: 'Salt', imageUrl: ingredientImage },
+	  { name: 'Eggs', imageUrl: eggs },
+	  { name: 'Cheese', imageUrl: cheese },
+	  { name: 'Bell Peppers', imageUrl: pepper },
+	  { name: 'Onions', imageUrl: onion },
+	  { name: 'Salt', imageUrl: salt },
 	], steps: [
 	  { order: 1, description: 'Beat the **Eggs** with **Salt**.' },
 	  { order: 2, description: 'Heat a pan and add the **Onions** and **Bell Peppers**.' },
@@ -107,10 +144,10 @@ export interface Ingredient {
 	}},
 	{ id: '3', name: 'Smoothie', imageUrl: smoothie, mealType: 'breakfast', ingredients: [
 	  { name: 'Banana', imageUrl: ingredientImage },
-	  { name: 'Strawberries', imageUrl: ingredientImage },
-	  { name: 'Yogurt', imageUrl: ingredientImage },
-	  { name: 'Honey', imageUrl: ingredientImage },
-	  { name: 'Ice', imageUrl: ingredientImage },
+	  { name: 'Strawberries', imageUrl: strawberries },
+	  { name: 'Yogurt', imageUrl: yogurt },
+	  { name: 'Honey', imageUrl: honey },
+	  { name: 'Ice', imageUrl: ice },
 	], steps: [
 	  { order: 1, description: 'Add **Banana**, **Strawberries**, and **Yogurt** to a blender.' },
 	  { order: 2, description: 'Add **Honey** and **Ice**.' },
@@ -125,11 +162,11 @@ export interface Ingredient {
 	  sugar: 30,
 	}},
 	{ id: '4', name: 'Toast', imageUrl: toast, mealType: 'breakfast', ingredients: [
-	  { name: 'Bread', imageUrl: ingredientImage },
-	  { name: 'Butter', imageUrl: ingredientImage },
-	  { name: 'Jam', imageUrl: ingredientImage },
-	  { name: 'Peanut Butter', imageUrl: ingredientImage },
-	  { name: 'Honey', imageUrl: ingredientImage },
+	  { name: 'Bread', imageUrl: bread },
+	  { name: 'Butter', imageUrl: butter },
+	  { name: 'Jam', imageUrl: jam },
+	  { name: 'Peanut Butter', imageUrl: peanut },
+	  { name: 'Honey', imageUrl: honey },
 	], steps: [
 	  { order: 1, description: 'Toast the **Bread** slices.' },
 	  { order: 2, description: 'Spread **Butter** on the toast.' },
@@ -148,11 +185,11 @@ export interface Ingredient {
       
       export const lunchRecipes: Recipe[] = [
 	{ id: '5', name: 'Spaghetti', imageUrl: spagetti, mealType: 'lunch', ingredients: [
-	  { name: 'Spaghetti', imageUrl: ingredientImage },
-	  { name: 'Tomato Sauce', imageUrl: ingredientImage },
-	  { name: 'Ground Beef', imageUrl: ingredientImage },
-	  { name: 'Garlic', imageUrl: ingredientImage },
-	  { name: 'Parmesan', imageUrl: ingredientImage },
+	  { name: 'Spaghetti', imageUrl: spagetti },
+	  { name: 'Tomato Sauce', imageUrl: paste },
+	  { name: 'Ground Beef', imageUrl: beef },
+	  { name: 'Garlic', imageUrl: garlic },
+	  { name: 'Parmesan', imageUrl: parmesan },
 	], steps: [
 	  { order: 1, description: 'Cook the **Spaghetti** according to package instructions.' },
 	  { order: 2, description: 'In a pan, cook the **Ground Beef** with **Garlic**.' },
@@ -168,11 +205,11 @@ export interface Ingredient {
 	  sugar: 10,
 	}},
 	{ id: '6', name: 'Jollof Rice', imageUrl: jollof, mealType: 'lunch', ingredients: [
-	  { name: 'Rice', imageUrl: ingredientImage },
-	  { name: 'Tomato Paste', imageUrl: ingredientImage },
-	  { name: 'Chicken', imageUrl: ingredientImage },
-	  { name: 'Onions', imageUrl: ingredientImage },
-	  { name: 'Peppers', imageUrl: ingredientImage },
+	  { name: 'Rice', imageUrl: rice },
+	  { name: 'Tomato Paste', imageUrl: paste },
+	  { name: 'Chicken', imageUrl: chicken },
+	  { name: 'Onions', imageUrl: onion },
+	  { name: 'Peppers', imageUrl: pepper },
 	], steps: [
 	  { order: 1, description: 'Cook the **Chicken** and set aside.' },
 	  { order: 2, description: 'In a pot, sauté **Onions** and **Peppers**.' },
@@ -188,11 +225,11 @@ export interface Ingredient {
 	  sugar: 8,
 	}},
 	{ id: '7', name: 'Oatmeal', imageUrl: oatmeal, mealType: 'lunch', ingredients: [
-	  { name: 'Oats', imageUrl: ingredientImage },
-	  { name: 'Milk', imageUrl: ingredientImage },
-	  { name: 'Honey', imageUrl: ingredientImage },
-	  { name: 'Banana', imageUrl: ingredientImage },
-	  { name: 'Berries', imageUrl: ingredientImage },
+	  { name: 'Oats', imageUrl: oats },
+	  { name: 'Milk', imageUrl: milk },
+	  { name: 'Honey', imageUrl: honey },
+	  { name: 'Banana', imageUrl: banana },
+	  { name: 'Berries', imageUrl: berries },
 	], steps: [
 	  { order: 1, description: 'Cook the **Oats** with **Milk**.' },
 	  { order: 2, description: 'Add **Honey** for sweetness.' },
@@ -207,11 +244,11 @@ export interface Ingredient {
 	  sugar: 20,
 	}},
 	{ id: '8', name: 'Croissant', imageUrl: croissant, mealType: 'lunch', ingredients: [
-	  { name: 'Flour', imageUrl: ingredientImage },
-	  { name: 'Butter', imageUrl: ingredientImage },
-	  { name: 'Yeast', imageUrl: ingredientImage },
-	  { name: 'Milk', imageUrl: ingredientImage },
-	  { name: 'Sugar', imageUrl: ingredientImage },
+	  { name: 'Flour', imageUrl: flour },
+	  { name: 'Butter', imageUrl: butter },
+	  { name: 'Yeast', imageUrl: yeast },
+	  { name: 'Milk', imageUrl: milk },
+	  { name: 'Sugar', imageUrl: sugar },
 	], steps: [
 	  { order: 1, description: 'Mix the **Flour**, **Yeast**, and **Sugar**.' },
 	  { order: 2, description: 'Add the **Milk** and knead the dough.' },
@@ -230,11 +267,11 @@ export interface Ingredient {
       
       export const dinnerRecipes: Recipe[] = [
 	{ id: '9', name: 'Steak', imageUrl: steak, mealType: 'dinner', ingredients: [
-	  { name: 'Steak', imageUrl: ingredientImage },
-	  { name: 'Salt', imageUrl: ingredientImage },
-	  { name: 'Pepper', imageUrl: ingredientImage },
-	  { name: 'Garlic', imageUrl: ingredientImage },
-	  { name: 'Butter', imageUrl: ingredientImage },
+	  { name: 'Steak', imageUrl: steak },
+	  { name: 'Salt', imageUrl: salt },
+	  { name: 'Pepper', imageUrl: pepper },
+	  { name: 'Garlic', imageUrl: garlic },
+	  { name: 'Butter', imageUrl: butter },
 	], steps: [
 	  { order: 1, description: 'Season the **Steak** with **Salt** and **Pepper**.' },
 	  { order: 2, description: 'Heat a pan and cook the steak to desired doneness.' },
@@ -250,11 +287,11 @@ export interface Ingredient {
 	  sugar: 0,
 	}},
 	{ id: '10', name: 'Salmon', imageUrl: salmon, mealType: 'dinner', ingredients: [
-	  { name: 'Salmon', imageUrl: ingredientImage },
-	  { name: 'Lemon', imageUrl: ingredientImage },
-	  { name: 'Dill', imageUrl: ingredientImage },
-	  { name: 'Garlic', imageUrl: ingredientImage },
-	  { name: 'Olive Oil', imageUrl: ingredientImage },
+	  { name: 'Salmon', imageUrl: salmon },
+	  { name: 'Lemon', imageUrl: lemon },
+	  { name: 'Dill', imageUrl: dill },
+	  { name: 'Garlic', imageUrl: garlic},
+	  { name: 'Olive Oil', imageUrl: oliveOli},
 	], steps: [
 	  { order: 1, description: 'Season the **Salmon** with **Salt** and **Pepper**.' },
 	  { order: 2, description: 'Heat a pan and cook the salmon skin-side down.' },
@@ -270,11 +307,11 @@ export interface Ingredient {
 	  sugar: 0,
 	}},
 	{ id: '11', name: 'Pasta', imageUrl: pasta, mealType: 'dinner', ingredients: [
-	  { name: 'Pasta', imageUrl: ingredientImage },
-	  { name: 'Tomato Sauce', imageUrl: ingredientImage },
-	  { name: 'Basil', imageUrl: ingredientImage },
-	  { name: 'Parmesan', imageUrl: ingredientImage },
-	  { name: 'Olive Oil', imageUrl: ingredientImage },
+	  { name: 'Pasta', imageUrl: pasta },
+	  { name: 'Tomato Sauce', imageUrl: paste },
+	  { name: 'Basil', imageUrl: basilOli },
+	  { name: 'Parmesan', imageUrl: pramesan },
+	  { name: 'Olive Oil', imageUrl: oliveOil },
 	], steps: [
 	  { order: 1, description: 'Cook the **Pasta** according to package instructions.' },
 	  { order: 2, description: 'In a pan, heat the **Tomato Sauce**.' },
@@ -290,8 +327,8 @@ export interface Ingredient {
 	  sugar: 10,
 	}},
 	{ id: '12', name: 'Soup', imageUrl: soup, mealType: 'dinner', ingredients: [
-	  { name: 'Chicken', imageUrl: ingredientImage },
-	  { name: 'Carrots', imageUrl: ingredientImage },
+	  { name: 'Chicken', imageUrl: chicken },
+	  { name: 'Carrots', imageUrl: Parmesan },
 	  { name: 'Celery', imageUrl: ingredientImage },
 	  { name: 'Onions', imageUrl: ingredientImage },
 	  { name: 'Broth', imageUrl: ingredientImage },
