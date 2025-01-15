@@ -11,7 +11,7 @@ const Screen2 = ({ navigation }) => {
         Kick start your metabolism and help burn calories throughout the day.
       </Text>
       <View style={styles.footer}>
-        <TouchableOpacity onPress={() => navigation.navigate("Welcome")}>
+        <TouchableOpacity onPress={() => navigation.navigate("HealthPreferences")}>
           <Text style={styles.footerText}>Skip</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("JunkFood")}>

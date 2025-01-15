@@ -6,13 +6,10 @@ import logo from "../../assets/img/logo.png"; // Correct local image import
 const WelcomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.title}>Welcome to</Text> */}
-      <View style={styles.iconContainer}>
-        <Image
-          source={logo} // Use the imported image directly
-          style={styles.icon}
-        />
-      </View>
+      <Image
+        source={logo} // Use the imported image directly
+        style={styles.logo} // Updated style for the logo
+      />
       <Text style={styles.subtitle}>DietSync</Text>
       <TouchableOpacity
         style={styles.button}

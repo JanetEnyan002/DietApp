@@ -7,39 +7,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
   },
-  title: {
-    fontSize: 24,
-    color: "#000",
+  logo: {
+    width: 150, // Scaled down width
+    height: 150, // Scaled down height
+    resizeMode: "contain",
     marginBottom: 20,
-  },
-  iconContainer: {
-    width: 100,
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#28a745",
-    borderRadius: 50,
-    marginBottom: 20,
-  },
-  icon: {
-    width: 50,
-    height: 50,
   },
   subtitle: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "bold",
-    color: "#006400",
+    color: "#333",
     marginBottom: 40,
   },
   button: {
-    backgroundColor: "#006400",
+    backgroundColor: "#28a745",
     paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 30,
+    paddingHorizontal: 30,
+    borderRadius: 25,
   },
   buttonText: {
+    fontSize: 18,
     color: "#fff",
-    fontSize: 16,
     fontWeight: "bold",
   },
 });
